@@ -1,0 +1,40 @@
+import numpy as np
+
+# XOR input and expected output
+
+X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+Y = np.array([[0], [1], [1], [0]])
+
+# Neural network: 2 inputs, 4 hidden neurons, 1 output
+
+INPUTS = 2
+HIDDEN = 4
+OUTPUTS = 1
+
+# Genetic algorithm parameters
+
+POP_SIZE = 100
+GENERATIONS = 1000
+MUTATION_RATE = 0.1
+
+# Total weights and biases
+
+GENES = INPUTS * HIDDEN + HIDDEN + HIDDEN * OUTPUTS + OUTPUTS
+
+def sigmoid(x):
+x = np.clip(x, -500, 500)
+return 1 / (1 + np.exp(-x))
+
+# Convert chromosome into neural network weights
+
+def decode(chromosome):
+i = 0
+w1 = chromosome[i:i + INPUTS * HIDDEN].reshape(INPUTS, HIDDEN)
+i += INPUTS * HIDDEN
+
+```
+b1 = chromosome[i:i + HIDDEN]
+i += HIDDEN
+
+w2 = c
+```
