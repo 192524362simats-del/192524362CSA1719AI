@@ -1,0 +1,21 @@
+```python
+from itertools import permutations
+
+def solve_cryptarithmetic():
+    letters = 'SENDMORY'
+    digits = '0123456789'
+
+    for perm in permutations(digits, len(letters)):
+        s = dict(zip(letters, perm))
+
+        # First letters cannot be zero
+        if s['S'] == '0' or s['M'] == '0':
+            continue
+
+        SEND = int(s['S'] + s['E'] + s['N'] + s['D'])
+        MORE = int(s['M'] + s['O'] + s['R'] + s['E'])
+        MONEY = int(s['M'] + s['O'] + s['N'] + s['E'] + s['Y'])
+
+        if SEND + MORE == MONEY:
+            print("Solution Found:")
+```
