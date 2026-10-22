@@ -1,0 +1,56 @@
+```python
+# Bayesian Network Implementation
+
+# Probability of Cloudy
+P_Cloudy = 0.5
+
+# Conditional probabilities
+P_Rain_given_Cloudy = {
+    True: 0.8,
+    False: 0.2
+}
+
+P_Sprinkler_given_Cloudy = {
+    True: 0.1,
+    False: 0.5
+}
+
+# Probability of Wet Grass given Rain and Sprinkler
+P_WetGrass = {
+    (True, True): 0.99,
+    (True, False): 0.90,
+    (False, True): 0.90,
+    (False, False): 0.01
+}
+
+# Calculate joint probability
+def joint_probability(cloudy, rain, sprinkler, wet_grass):
+    p_cloudy = P_Cloudy if cloudy else 1 - P_Cloudy
+
+    p_rain = (
+        P_Rain_given_Cloudy[cloudy]
+        if rain else 1 - P_Rain_given_Cloudy[cloudy]
+    )
+
+    p_sprinkler = (
+        P_Sprinkler_given_Cloudy[cloudy]
+        if sprinkler else 1 - P_Sprinkler_given_Cloudy[cloudy]
+    )
+
+    p_wet = P_WetGrass[(rain, sprinkler)]
+    p_wet = p_wet if wet_grass else 1 - p_wet
+
+    return p_cloudy * p_rain * p_sprinkler * p_wet
+
+
+# Example calculation
+p = joint_probability(True, True, False, True)
+
+print("Bayesian Network")
+print("----------------")
+print("Cloudy: True")
+print("Rain: True")
+print("Sprinkler: False")
+print("Wet Grass: True")
+print("Joint Probability:", round(p, 4))
+```
