@@ -1,0 +1,50 @@
+# Hyperparameter Tuning using GridSearchCV
+
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+
+# Load the dataset
+iris = load_iris()
+X = iris.data
+y = iris.target
+
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Create the machine learning model
+model = DecisionTreeClassifier(random_state=42)
+
+# Define hyperparameters to tune
+param_grid = {
+    'max_depth': [2, 3, 4, 5, None],
+    'criterion': ['gini', 'entropy'],
+    'min_samples_split': [2, 5, 10]
+}
+
+# Perform hyperparameter tuning
+grid_search = GridSearchCV(
+    estimator=model,
+    param_grid=param_grid,
+    cv=5,
+    scoring='accuracy'
+)
+
+grid_search.fit(X_train, y_train)
+
+# Display the best hyperparameters
+print("Best Hyperparameters:", grid_search.best_params_)
+
+# Display the best cross-validation accuracy
+print("Best Cross-Validation Accuracy:", grid_search.best_score_)
+
+# Evaluate the best model on test data
+best_model = grid_search.best_estimator_
+y_pred = best_model.predict(X_test)
+
+accuracy = accuracy_score(y_test, y_pred)
+
+print("Test Accuracy:", accuracy)
