@@ -1,0 +1,29 @@
+```prolog
+% Monkey Banana Problem
+
+% Initial state:
+% Monkey is at the door.
+% Box is at the window.
+% Monkey is on the floor.
+% Banana is hanging from the ceiling.
+
+% Monkey can move from one place to another.
+move(monkey, door, window).
+move(monkey, window, door).
+move(monkey, door, middle).
+move(monkey, middle, door).
+move(monkey, window, middle).
+move(monkey, middle, window).
+
+% Monkey pushes the box.
+push_box(door, window, middle).
+push_box(window, door, middle).
+
+% Monkey climbs onto the box.
+climb_box(on_floor, on_box).
+
+% Monkey grasps the banana.
+grasp(on_box, has_banana).
+
+% Goal: Monkey gets the ban
+```
