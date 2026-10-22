@@ -1,0 +1,41 @@
+```python
+import face_recognition
+import cv2
+
+# Load the image containing a known face
+known_image = face_recognition.load_image_file("known.jpg")
+
+# Extract the face encoding
+known_encodings = face_recognition.face_encodings(known_image)
+
+if len(known_encodings) == 0:
+    print("No face found in known.jpg")
+    exit()
+
+known_face_encoding = known_encodings[0]
+
+# Load the image to recognize
+test_image = face_recognition.load_image_file("test.jpg")
+
+# Detect faces and extract their encodings
+face_locations = face_recognition.face_locations(test_image)
+face_encodings = face_recognition.face_encodings(test_image, face_locations)
+
+# Convert RGB image to BGR for OpenCV
+output_image = cv2.cvtColor(test_image, cv2.COLOR_RGB2BGR)
+
+# Compare each detected face with the known face
+for face_location, face_encoding in zip(face_locations, face_encodings):
+
+    matches = face_recognition.compare_faces(
+        [known_face_encoding], face_encoding
+    )
+
+    top, right, bottom, left = face_location
+
+    if matches[0]:
+        name = "Known Person"
+        color = (0, 255, 0)
+    else:
+        name = "Unknown Person"
+```
