@@ -1,0 +1,25 @@
+```python
+# Basic Recommendation System using Collaborative Filtering
+
+import pandas as pd
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Sample user-item rating data
+data = {
+    'Movie1': [5, 4, 0, 0, 2],
+    'Movie2': [4, 5, 0, 0, 1],
+    'Movie3': [0, 0, 5, 4, 0],
+    'Movie4': [0, 0, 4, 5, 0],
+    'Movie5': [1, 2, 0, 0, 5]
+}
+
+users = ['User1', 'User2', 'User3', 'User4', 'User5']
+
+# Create a user-item rating matrix
+df = pd.DataFrame(data, index=users)
+
+print("User-Item Rating Matrix:")
+print(df)
+
+# Calculate similarity between us
+```
