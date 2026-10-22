@@ -1,0 +1,47 @@
+```prolog
+% Dieting System Based on Disease
+
+% Diet suggestions for different diseases
+
+diet(diabetes, [
+    'Whole grains',
+    'Green vegetables',
+    'Oats',
+    'Beans',
+    'Low-sugar fruits'
+]).
+
+diet(hypertension, [
+    'Fresh fruits',
+    'Green vegetables',
+    'Low-salt foods',
+    'Whole grains',
+    'Low-fat dairy products'
+]).
+
+diet(obesity, [
+    'Vegetable salads',
+    'Fresh fruits',
+    'Whole grains',
+    'Lean protein',
+    'Low-calorie foods'
+]).
+
+diet(heart_disease, [
+    'Oats',
+    'Green vegetables',
+    'Fresh fruits',
+    'Fish',
+    'Low-saturated-fat foods'
+]).
+
+diet(anemia, [
+    'Spinach',
+    'Beans',
+    'Lentils',
+    'Iron-fortified cereals',
+    'Vitamin C-rich fruits'
+]).
+
+% Display diet suggest
+```
