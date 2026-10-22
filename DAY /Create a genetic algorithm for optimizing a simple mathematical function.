@@ -1,0 +1,34 @@
+```python
+import random
+
+# Objective function
+def fitness(x):
+    return x * x
+
+# Generate initial population
+population = [random.randint(0, 31) for _ in range(6)]
+
+generations = 20
+
+for generation in range(generations):
+    # Selection: choose the two best individuals
+    population.sort(key=fitness, reverse=True)
+    parent1 = population[0]
+    parent2 = population[1]
+
+    # Crossover: create a child
+    child = (parent1 + parent2) // 2
+
+    # Mutation: randomly change the child
+    if random.random() < 0.2:
+        child = random.randint(0, 31)
+
+    # Create the next generation
+    population[-1] = child
+
+    # Display the best solution
+    best = max(population, key=fitness)
+    print("Generation:", generation + 1,
+          "| Best x:", best,
+          "| Fitness:"
+```
