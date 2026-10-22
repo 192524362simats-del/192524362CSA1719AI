@@ -1,0 +1,36 @@
+```python
+from collections import deque
+
+def water_jug_problem():
+    jug1 = 4
+    jug2 = 3
+    target = 2
+
+    visited = set()
+    queue = deque([(0, 0, [])])
+
+    while queue:
+        x, y, path = queue.popleft()
+
+        if (x, y) in visited:
+            continue
+
+        visited.add((x, y))
+        path = path + [(x, y)]
+
+        if x == target or y == target:
+            print("Water Jug Problem Solution:")
+            for step in path:
+                print(step)
+            print("Target amount reached!")
+            return
+
+        next_states = [
+            (jug1, y),                  # Fill Jug 1
+            (x, jug2),                  # Fill Jug 2
+            (0, y),                     # Empty Jug 1
+            (x, 0),                     # Empty Jug 2
+            (x - min(x, jug2 - y),
+             y + min(x, jug2 - y)),     # Pour Jug 1 into Jug 2
+            (x + min(y,
+```
