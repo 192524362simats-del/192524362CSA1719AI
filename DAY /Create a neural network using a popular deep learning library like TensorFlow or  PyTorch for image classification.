@@ -1,0 +1,68 @@
+```python
+import tensorflow as tf
+import matplotlib.pyplot as plt
+
+# Load the CIFAR-10 dataset
+(x_train, y_train), (x_test, y_test) = (
+    tf.keras.datasets.cifar10.load_data()
+)
+
+# Define image classes
+class_names = [
+    'Airplane', 'Automobile', 'Bird', 'Cat', 'Deer',
+    'Dog', 'Frog', 'Horse', 'Ship', 'Truck'
+]
+
+# Normalize pixel values between 0 and 1
+x_train = x_train / 255.0
+x_test = x_test / 255.0
+
+# Build the neural network
+model = tf.keras.Sequential([
+    tf.keras.layers.Input(shape=(32, 32, 3)),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(256, activation='relu'),
+    tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Dense(10, activation='softmax')
+])
+
+# Compile the model
+model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+# Display model architecture
+model.summary()
+
+# Train the neural network
+model.fit(
+    x_train,
+    y_train,
+    epochs=5,
+    batch_size=64,
+    validation_split=0.1
+)
+
+# Evaluate the model
+loss, accuracy = model.evaluate(x_test, y_test, verbose=0)
+
+print("\nTest Accuracy:", round(accuracy * 100, 2), "%")
+
+# Predict an image
+index = 0
+prediction = model.predict(x_test[index:index + 1], verbose=0)
+
+predicted_class = prediction.argmax()
+actual_class = int(y_test[index][0])
+
+print("Predicted Class:", class_names[predicted_class])
+print("Actual Class:", class_names[actual_class])
+
+# Display the test image
+plt.imshow(x_test[index])
+plt.title("Predicted: " + class_names[predicted_class])
+plt.axis("off")
+plt.show()
+```
