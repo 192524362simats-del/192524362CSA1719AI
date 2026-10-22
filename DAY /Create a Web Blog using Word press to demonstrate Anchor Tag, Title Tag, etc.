@@ -1,0 +1,76 @@
+```python
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>My Technology Blog</title>
+    </head>
+    <body style="font-family: Arial; margin: 40px; background-color: #f0f8ff;">
+
+        <h1>Welcome to My Technology Blog</h1>
+
+        <p>
+            Welcome to my blog! This website provides information
+            about modern technology and computer science.
+        </p>
+
+        <hr>
+
+        <h2>About Technology</h2>
+
+        <p>
+            Technology helps people communicate, learn, and work
+            efficiently in everyday life.
+        </p>
+
+        <h2>Latest Technology Trends</h2>
+
+        <ul>
+            <li>Artificial Intelligence</li>
+            <li>Machine Learning</li>
+            <li>Cloud Computing</li>
+            <li>Internet of Things</li>
+        </ul>
+
+        <h2>Technology Image</h2>
+
+        <img src="https://placehold.co/400x200?text=Technology"
+             alt="Technology Image" width="400">
+
+        <h2>Useful Website</h2>
+
+        <a href="https://wordpress.com"
+           title="Visit WordPress Website">
+           Click Here to Visit WordPress
+        </a>
+
+        <h2>Internal Link Example</h2>
+
+        <a href="#conclusion">Go to Conclusion</a>
+
+        <br><br>
+
+        <h2 id="conclusion">Conclusion</h2>
+
+        <p>
+            This blog demonstrates the Title Tag, Anchor Tag,
+            Heading Tag, Paragraph Tag, Image Tag, and List Tags.
+        </p>
+
+        <hr>
+
+        <p><b>Created by: Student</b></p>
+
+    </body>
+    </html>
+    """
+
+if __name__ == "__main__":
+    app.run(debug=True)
+```
