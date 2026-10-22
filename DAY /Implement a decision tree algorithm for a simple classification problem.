@@ -1,0 +1,41 @@
+```python
+from sklearn.tree import DecisionTreeClassifier
+
+# Training data: [Study Hours, Attendance]
+X = [
+    [1, 40],
+    [2, 50],
+    [3, 60],
+    [4, 70],
+    [5, 80],
+    [6, 90],
+    [7, 95],
+    [2, 45],
+    [5, 85],
+    [6, 80]
+]
+
+# Output: 0 = Fail, 1 = Pass
+y = [0, 0, 0, 1, 1, 1, 1, 0, 1, 1]
+
+# Create and train the Decision Tree model
+model = DecisionTreeClassifier(random_state=42)
+model.fit(X, y)
+
+# Predict the result for a new student
+study_hours = 4
+attendance = 75
+
+prediction = model.predict([[study_hours, attendance]])
+
+# Display the result
+print("DECISION TREE CLASSIFICATION")
+print("--------------------------------")
+print("Study Hours:", study_hours)
+print("Attendance:", attendance, "%")
+
+if prediction[0] == 1:
+    print("Prediction: PASS")
+else:
+    print("Prediction: FAIL")
+```
