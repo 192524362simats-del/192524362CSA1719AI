@@ -1,0 +1,32 @@
+% Facts
+fact(has_fever).
+fact(has_cough).
+
+% Rules
+rule(flu, [has_fever, has_cough]).
+rule(needs_rest, [flu]).
+rule(consult_doctor, [flu]).
+
+% Forward Chaining Algorithm
+forward_chaining :-
+    rule(Conclusion, Conditions),
+    check_conditions(Conditions),
+    \+ fact(Conclusion),
+    assertz(fact(Conclusion)),
+    write('New fact derived: '),
+    write(Conclusion),
+    nl,
+    fail.
+
+forward_chaining.
+
+% Check whether all conditions are satisfied
+check_conditions([]).
+
+check_conditions([H|T]) :-
+    fact(H),
+    check_conditions(T).
+
+% Query to check a fact
+check_fact(X) :-
+    fact(X).
