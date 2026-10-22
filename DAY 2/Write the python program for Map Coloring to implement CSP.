@@ -1,0 +1,44 @@
+```python
+# Map Coloring Problem using CSP
+
+# Define the map and neighboring regions
+graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'C', 'D'],
+    'C': ['A', 'B', 'D'],
+    'D': ['B', 'C']
+}
+
+# Available colors
+colors = ['Red', 'Green', 'Blue']
+
+# Store the assigned colors
+color_assignment = {}
+
+
+def is_valid(region, color):
+    for neighbor in graph[region]:
+        if neighbor in color_assignment:
+            if color_assignment[neighbor] == color:
+                return False
+    return True
+
+
+def solve():
+    if len(color_assignment) == len(graph):
+        return True
+
+    # Select the next uncolored region
+    region = next(r for r in graph if r not in color_assignment)
+
+    # Try each available color
+    for color in colors:
+        if is_valid(region, color):
+            color_assignment[region] = color
+
+            if solve():
+                return True
+
+            # Backtrack
+            del col
+```
