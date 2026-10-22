@@ -1,0 +1,34 @@
+```python
+import numpy as np
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+
+# Sample dataset with 3 features
+data = np.array([
+    [2, 3, 5],
+    [4, 5, 7],
+    [6, 7, 9],
+    [8, 9, 11],
+    [10, 11, 13]
+])
+
+print("Original Dataset:")
+print(data)
+
+# Standardize the dataset
+scaler = StandardScaler()
+scaled_data = scaler.fit_transform(data)
+
+# Apply PCA to reduce dimensions from 3 to 2
+pca = PCA(n_components=2)
+reduced_data = pca.fit_transform(scaled_data)
+
+print("\nDataset After PCA:")
+print(np.round(reduced_data, 2))
+
+print("\nExplained Variance Ratio:")
+print(np.round(pca.explained_variance_ratio_, 2))
+
+print("\nOriginal Number of Features:", data.shape[1])
+print("Reduced Number of Features:", reduced_data.shape[1])
+```
