@@ -1,0 +1,41 @@
+% Medical Diagnosis System
+
+% Facts
+symptom(fever, flu).
+symptom(cough, flu).
+symptom(body_pain, flu).
+
+symptom(sneezing, cold).
+symptom(runny_nose, cold).
+symptom(cough, cold).
+
+symptom(fever, malaria).
+symptom(chills, malaria).
+symptom(sweating, malaria).
+
+% Diagnosis Rules
+diagnosis(Patient, flu) :-
+    has_symptom(Patient, fever),
+    has_symptom(Patient, cough),
+    has_symptom(Patient, body_pain).
+
+diagnosis(Patient, cold) :-
+    has_symptom(Patient, sneezing),
+    has_symptom(Patient, runny_nose).
+
+diagnosis(Patient, malaria) :-
+    has_symptom(Patient, fever),
+    has_symptom(Patient, chills),
+    has_symptom(Patient, sweating).
+
+% Patient Symptoms
+has_symptom(raju, fever).
+has_symptom(raju, cough).
+has_symptom(raju, body_pain).
+
+has_symptom(abi, sneezing).
+has_symptom(abi, runny_nose).
+
+% Query:
+% ?- diagnosis(raju, Disease).
+% ?- diagnosis(abi, Disease).
