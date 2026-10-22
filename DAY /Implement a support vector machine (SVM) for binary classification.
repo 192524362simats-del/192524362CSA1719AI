@@ -1,0 +1,46 @@
+import numpy as np
+from sklearn import svm
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, classification_report
+
+# Sample dataset
+X = np.array([
+    [1, 2],
+    [2, 3],
+    [3, 3],
+    [4, 5],
+    [5, 6],
+    [6, 7],
+    [7, 8],
+    [8, 9]
+])
+
+# Binary class labels (0 and 1)
+y = np.array([0, 0, 0, 0, 1, 1, 1, 1])
+
+# Split dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42, stratify=y
+)
+
+# Create the SVM classifier
+model = svm.SVC(kernel='linear')
+
+# Train the model
+model.fit(X_train, y_train)
+
+# Predict the test data
+y_pred = model.predict(X_test)
+
+# Display results
+print("Support Vector Machine - Binary Classification")
+print("Actual Labels:    ", y_test)
+print("Predicted Labels: ", y_pred)
+print("Accuracy: {:.2f}%".format(accuracy_score(y_test, y_pred) * 100))
+
+# Predict a new sample
+new_sample = np.array([[4.5, 5.5]])
+prediction = model.predict(new_sample)
+
+print("New Sample:", new_sample[0])
+print("Predicted Class:", prediction[0])
