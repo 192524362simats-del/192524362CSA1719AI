@@ -1,0 +1,25 @@
+```python
+import random
+from collections import defaultdict, Counter
+
+class MarkovChain:
+    def __init__(self):
+        self.transitions = defaultdict(Counter)
+
+    def train(self, sequences):
+        for sequence in sequences:
+            for i in range(len(sequence) - 1):
+                current_event = sequence[i]
+                next_event = sequence[i + 1]
+                self.transitions[current_event][next_event] += 1
+
+    def predict_next(self, current_event):
+        if current_event not in self.transitions:
+            return None
+
+        counts = self.transitions[current_event]
+        events = list(counts.keys())
+        probabilities = list(counts.values())
+
+        return random.choices(events, weights=probabilities, k=1)[0]
+```
