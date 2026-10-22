@@ -1,0 +1,26 @@
+% Facts
+student(kalairajan, s101).
+student(raja, s102).
+student(kumar, s103).
+
+teacher(ravi, t101).
+teacher(priya, t102).
+teacher(anjali, t103).
+
+subject(s101, sub101).
+subject(s102, sub102).
+subject(s103, sub103).
+
+teaches(ravi, sub101).
+teaches(priya, sub102).
+teaches(anjali, sub103).
+
+% Rules
+student_teacher(Student, Teacher) :-
+    student(Student, Subject),
+    subject(Subject, SubCode),
+    teaches(Teacher, SubCode).
+
+student_subject(Student, SubCode) :-
+    student(Student, Subject),
+    subject(Subject, SubCode).
