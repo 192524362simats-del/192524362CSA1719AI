@@ -1,0 +1,88 @@
+```python
+from heapq import heappush, heappop
+
+def heuristic(state, goal):
+    distance = 0
+    for i in range(9):
+        if state[i] != 0:
+            goal_pos = goal.index(state[i])
+            distance += abs(i // 3 - goal_pos // 3)
+            distance += abs(i % 3 - goal_pos % 3)
+    return distance
+
+def get_neighbors(state):
+    neighbors = []
+    zero = state.index(0)
+    row, col = zero // 3, zero % 3
+
+    moves = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+
+    for dr, dc in moves:
+        r, c = row + dr, col + dc
+
+        if 0 <= r < 3 and 0 <= c < 3:
+            new_state = list(state)
+            pos = r * 3 + c
+            new_state[zero], new_state[pos] = new_state[pos], new_state[zero]
+            neighbors.append(tuple(new_state))
+
+    return neighbors
+
+def solve_puzzle(start, goal):
+    pq = []
+    heappush(pq, (heuristic(start, goal), 0, start))
+
+    parent = {start: None}
+    cost = {start: 0}
+
+    while pq:
+        _, g, current = heappop(pq)
+
+        if current == goal:
+            path = []
+            while current is not None:
+                path.append(current)
+                current = parent[current]
+
+            path.reverse()
+            return path
+
+        if g != cost[current]:
+            continue
+
+        for neighbor in get_neighbors(current):
+            new_cost = g + 1
+
+            if neighbor not in cost or new_cost < cost[neighbor]:
+                cost[neighbor] = new_cost
+                parent[neighbor] = current
+                f = new_cost + heuristic(neighbor, goal)
+                heappush(pq, (f, new_cost, neighbor))
+
+    return None
+
+def display(state):
+    for i in range(0, 9, 3):
+        print(*[x if x != 0 else "_" for x in state[i:i + 3]])
+    print()
+
+start = (1, 2, 3,
+         4, 0, 6,
+         7, 5, 8)
+
+goal = (1, 2, 3,
+        4, 5, 6,
+        7, 8, 0)
+
+solution = solve_puzzle(start, goal)
+
+if solution:
+    print("Solution found!")
+    print("Number of moves:", len(solution) - 1)
+
+    for step, state in enumerate(solution):
+        print("Step", step)
+        display(state)
+else:
+    print("No solution exists.")
+```
