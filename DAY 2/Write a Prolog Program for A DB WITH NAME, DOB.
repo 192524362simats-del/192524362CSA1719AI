@@ -1,0 +1,21 @@
+```prolog
+% Database containing Name and Date of Birth
+
+person(kalairajan, '2005-05-15').
+person(rajesh, '2004-08-20').
+person(priya, '2005-01-10').
+person(kumar, '2003-12-25').
+person(anitha, '2004-06-18').
+
+% Rule to display a person's DOB
+show_dob(Name, DOB) :-
+    person(Name, DOB).
+
+% Rule to display all persons
+show_all :-
+    person(Name, DOB),
+    write('Name: '), write(Name),
+    write(', DOB: '), write(DOB), nl,
+    fail.
+show_all.
+```
