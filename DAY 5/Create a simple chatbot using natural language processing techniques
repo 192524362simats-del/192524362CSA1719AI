@@ -1,0 +1,87 @@
+```python
+import nltk
+import random
+import re
+from nltk.tokenize import word_tokenize
+
+# Download tokenizer data
+nltk.download('punkt', quiet=True)
+nltk.download('punkt_tab', quiet=True)
+
+# Chatbot responses
+responses = {
+    "greeting": [
+        "Hello! How can I help you?",
+        "Hi! Nice to meet you.",
+        "Hey! What can I do for you?"
+    ],
+    "name": [
+        "I am a simple NLP chatbot.",
+        "You can call me ChatBot."
+    ],
+    "feeling": [
+        "I am doing great! How are you?",
+        "I am fine. Thanks for asking!"
+    ],
+    "help": [
+        "I can answer simple questions and chat with you.",
+        "Ask me about my name, greetings, or how I am feeling."
+    ],
+    "goodbye": [
+        "Goodbye! Have a great day!",
+        "See you soon!",
+        "Thank you for chatting with me!"
+    ]
+}
+
+
+def preprocess(text):
+    """Convert text to lowercase and tokenize it."""
+    text = text.lower()
+    tokens = word_tokenize(text)
+    return tokens
+
+
+def chatbot(user_input):
+    """Identify user intent and generate a response."""
+    tokens = preprocess(user_input)
+    text = " ".join(tokens)
+
+    if re.search(r"\b(hello|hi|hey)\b", text):
+        intent = "greeting"
+
+    elif "name" in tokens:
+        intent = "name"
+
+    elif any(word in tokens for word in
+             ["feeling", "how", "doing", "well"]):
+        intent = "feeling"
+
+    elif any(word in tokens for word in
+             ["help", "support", "assist"]):
+        intent = "help"
+
+    elif any(word in tokens for word in
+             ["bye", "goodbye", "exit", "quit"]):
+        intent = "goodbye"
+
+    else:
+        return (
+            "Sorry, I don't understand that yet. "
+            "Please ask me something else."
+        )
+
+    return random.choice(responses[intent])
+
+
+# Main program
+print("=" * 40)
+print("       SIMPLE NLP CHATBOT")
+print("=" * 40)
+print("Chat with me! Type 'bye' to exit.\n")
+
+while True:
+    user_message = input("You: ")
+
+    if not user_message.strip():
+```
