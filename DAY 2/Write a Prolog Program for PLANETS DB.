@@ -1,0 +1,22 @@
+```prolog
+% Planets Database
+
+% planet(Name, Type, DistanceFromSun, NumberOfMoons).
+
+planet(mercury, terrestrial, 58, 0).
+planet(venus, terrestrial, 108, 0).
+planet(earth, terrestrial, 150, 1).
+planet(mars, terrestrial, 228, 2).
+planet(jupiter, gas_giant, 778, 95).
+planet(saturn, gas_giant, 1434, 146).
+planet(uranus, ice_giant, 2871, 28).
+planet(neptune, ice_giant, 4495, 16).
+
+% Rules
+
+% Find planets of a particular type
+planet_type(Name, Type) :-
+    planet(Name, Type, _, _).
+
+% Find planets with thei
+```
