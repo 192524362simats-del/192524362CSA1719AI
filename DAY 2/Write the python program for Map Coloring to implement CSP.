@@ -1,0 +1,53 @@
+# Map Coloring using Constraint Satisfaction Problem (CSP)
+
+# Define the map regions
+regions = ['A', 'B', 'C', 'D']
+
+# Define available colors
+colors = ['Red', 'Green', 'Blue']
+
+# Define neighboring regions
+constraints = {
+    'A': ['B', 'C'],
+    'B': ['A', 'C', 'D'],
+    'C': ['A', 'B', 'D'],
+    'D': ['B', 'C']
+}
+
+# Check whether the color is valid
+def is_valid(region, color, assignment):
+    for neighbor in constraints[region]:
+        if neighbor in assignment and assignment[neighbor] == color:
+            return False
+    return True
+
+# Backtracking function
+def backtrack(assignment):
+    if len(assignment) == len(regions):
+        return assignment
+
+    region = next(r for r in regions if r not in assignment)
+
+    for color in colors:
+        if is_valid(region, color, assignment):
+            assignment[region] = color
+
+            result = backtrack(assignment)
+
+            if result:
+                return result
+
+            del assignment[region]
+
+    return None
+
+# Solve the map coloring problem
+solution = backtrack({})
+
+# Display the result
+if solution:
+    print("Map Coloring Solution:")
+    for region, color in solution.items():
+        print(region, ":", color)
+else:
+    print("No solution exists")
