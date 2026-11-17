@@ -1,0 +1,73 @@
+```python
+import random
+import math
+
+# Objective function
+def fitness(x):
+    return x * math.sin(10 * math.pi * x) + 1
+
+# Initialize population
+def create_population(size):
+    return [random.uniform(0, 1) for _ in range(size)]
+
+# Selection using tournament method
+def selection(population):
+    candidates = random.sample(population, 3)
+    return max(candidates, key=fitness)
+
+# Crossover operation
+def crossover(parent1, parent2):
+    alpha = random.random()
+    child = alpha * parent1 + (1 - alpha) * parent2
+    return child
+
+# Mutation operation
+def mutation(child):
+    if random.random() < 0.1:
+        child += random.gauss(0, 0.1)
+    return max(0, min(1, child))
+
+# Genetic Algorithm
+def genetic_algorithm():
+
+    population_size = 20
+    generations = 100
+
+    population = create_population(population_size)
+
+    for generation in range(generations):
+
+        new_population = []
+
+        # Elitism
+        best = max(population, key=fitness)
+        new_population.append(best)
+
+        while len(new_population) < population_size:
+
+            parent1 = selection(population)
+            parent2 = selection(population)
+
+            child = crossover(parent1, parent2)
+            child = mutation(child)
+
+            new_population.append(child)
+
+        population = new_population
+
+        best = max(population, key=fitness)
+
+        print("Generation:", generation + 1,
+              "Best X:", round(best, 5),
+              "Fitness:", round(fitness(best), 5))
+
+    best_solution = max(population, key=fitness)
+
+    print("\nOptimal Solution:")
+    print("X =", best_solution)
+    print("Maximum Fitness =", fitness(best_solution))
+
+
+# Execute Genetic Algorithm
+genetic_algorithm()
+```
