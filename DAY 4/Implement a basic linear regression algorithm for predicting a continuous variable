@@ -1,0 +1,51 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Dataset
+X = np.array([1, 2, 3, 4, 5])
+Y = np.array([2, 4, 5, 4, 5])
+
+# Calculate mean
+x_mean = np.mean(X)
+y_mean = np.mean(Y)
+
+# Calculate slope (m)
+numerator = np.sum((X - x_mean) * (Y - y_mean))
+denominator = np.sum((X - x_mean) ** 2)
+
+m = numerator / denominator
+
+# Calculate intercept (c)
+c = y_mean - m * x_mean
+
+# Prediction function
+def predict(x):
+    return m * x + c
+
+# Predict values
+Y_pred = predict(X)
+
+# Calculate Mean Squared Error
+mse = np.mean((Y - Y_pred) ** 2)
+
+# Display results
+print("Slope:", m)
+print("Intercept:", c)
+print("Predicted Values:", Y_pred)
+print("Mean Squared Error:", mse)
+
+# Predict a new value
+new_value = 6
+prediction = predict(new_value)
+
+print("Prediction for X =", new_value, "is:", prediction)
+
+# Plot regression line
+plt.scatter(X, Y, color='blue', label='Actual Data')
+plt.plot(X, Y_pred, color='red', label='Regression Line')
+
+plt.xlabel("Independent Variable (X)")
+plt.ylabel("Dependent Variable (Y)")
+plt.title("Simple Linear Regression")
+plt.legend()
+plt.show()
