@@ -1,0 +1,48 @@
+% Best First Search Algorithm in Prolog
+
+% Define the graph
+edge(a, b).
+edge(a, c).
+edge(b, d).
+edge(b, e).
+edge(c, f).
+edge(c, g).
+edge(d, h).
+edge(e, h).
+edge(f, h).
+edge(g, h).
+
+% Heuristic values
+heuristic(a, 10).
+heuristic(b, 8).
+heuristic(c, 5).
+heuristic(d, 7).
+heuristic(e, 3).
+heuristic(f, 4).
+heuristic(g, 6).
+heuristic(h, 0).
+
+% Best First Search
+best_first(Start, Goal, Path) :-
+    search([[Start]], Goal, RevPath),
+    reverse(RevPath, Path).
+
+search([[Goal|Rest]|_], Goal, [Goal|Rest]).
+
+search([ [Node|Path] | OtherPaths], Goal, Result) :-
+    findall([Next,Node|Path],
+            (edge(Node, Next),
+             \+ member(Next, [Node|Path])),
+            NewPaths),
+    append(OtherPaths, NewPaths, AllPaths),
+    sort_paths(AllPaths, SortedPaths),
+    search(SortedPaths, Goal, Result).
+
+% Sort paths based on heuristic values
+sort_paths(Paths, Sorted) :-
+    predsort(compare_paths, Paths, Sorted).
+
+compare_paths(Order, [Node1|_], [Node2|_]) :-
+    heuristic(Node1, H1),
+    heuristic(Node2, H2),
+    compare(Order, H1, H2).
