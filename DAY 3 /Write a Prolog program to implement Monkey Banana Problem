@@ -1,0 +1,37 @@
+% Monkey Banana Problem
+
+% Initial state:
+% Monkey is at the door.
+% Box is at the window.
+% Monkey is on the floor.
+% Banana is hanging from the ceiling.
+
+% State: state(MonkeyPosition, BoxPosition, MonkeyStatus)
+
+% Monkey moves to a location
+move(state(P, B, onfloor), Q, state(Q, B, onfloor)) :-
+    P \= Q.
+
+% Monkey pushes the box
+move(state(P, P, onfloor), Q, state(Q, Q, onfloor)) :-
+    P \= Q.
+
+% Monkey climbs onto the box
+move(state(P, P, onfloor), P, state(P, P, onbox)).
+
+% Monkey grasps the banana
+move(state(middle, middle, onbox), middle, state(middle, middle, hasbanana)).
+
+% Goal state
+goal(state(_, _, hasbanana)).
+
+% Find the solution
+solve(State) :-
+    goal(State).
+
+solve(State) :-
+    move(State, _, NewState),
+    solve(NewState).
+
+% Initial state
+initial(state(door, window, onfloor)).
