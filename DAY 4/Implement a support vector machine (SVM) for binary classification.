@@ -1,0 +1,70 @@
+# Import necessary libraries
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+from sklearn.metrics import (
+    accuracy_score,
+    confusion_matrix,
+    classification_report
+)
+
+# Step 1: Generate a binary classification dataset
+X, y = make_classification(
+    n_samples=200,
+    n_features=2,
+    n_informative=2,
+    n_redundant=0,
+    n_classes=2,
+    random_state=42
+)
+
+# Step 2: Split dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Step 3: Feature scaling
+scaler = StandardScaler()
+
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# Step 4: Create SVM classifier
+svm_model = SVC(kernel='linear', C=1.0)
+
+# Step 5: Train the model
+svm_model.fit(X_train, y_train)
+
+# Step 6: Predict test data
+y_pred = svm_model.predict(X_test)
+
+# Step 7: Evaluate the model
+accuracy = accuracy_score(y_test, y_pred)
+
+print("SVM Binary Classification")
+print("-------------------------")
+print("Accuracy:", accuracy)
+
+print("\nConfusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred))
+
+# Step 8: Visualize classification results
+plt.scatter(
+    X_test[:, 0],
+    X_test[:, 1],
+    c=y_pred,
+    cmap='coolwarm',
+    edgecolors='k'
+)
+
+plt.title("SVM Binary Classification")
+plt.xlabel("Feature 1")
+plt.ylabel("Feature 2")
+plt.show()
