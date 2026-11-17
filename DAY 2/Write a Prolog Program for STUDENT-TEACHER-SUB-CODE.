@@ -1,0 +1,38 @@
+% Facts: Student details
+student(101, kalairajan).
+student(102, arun).
+student(103, kumar).
+
+% Facts: Teacher details
+teacher(t1, ramesh).
+teacher(t2, priya).
+teacher(t3, suresh).
+
+% Facts: Subject details
+subject(cs101, computer_science).
+subject(cs102, mathematics).
+subject(cs103, physics).
+
+% Relationship between student, teacher and subject
+student_teacher_sub(101, t1, cs101).
+student_teacher_sub(102, t2, cs102).
+student_teacher_sub(103, t3, cs103).
+
+% Rule to find student details
+find_student(StudentID, Name) :-
+    student(StudentID, Name).
+
+% Rule to find teacher details
+find_teacher(TeacherID, Name) :-
+    teacher(TeacherID, Name).
+
+% Rule to find subject details
+find_subject(SubCode, SubjectName) :-
+    subject(SubCode, SubjectName).
+
+% Rule to find student, teacher and subject
+student_details(StudentID, StudentName, TeacherName, SubjectName) :-
+    student(StudentID, StudentName),
+    student_teacher_sub(StudentID, TeacherID, SubCode),
+    teacher(TeacherID, TeacherName),
+    subject(SubCode, SubjectName).
