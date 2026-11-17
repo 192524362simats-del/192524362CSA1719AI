@@ -1,0 +1,94 @@
+import random
+from collections import defaultdict, Counter
+
+class MarkovChain:
+
+    def __init__(self):
+        self.transitions = defaultdict(Counter)
+
+    # Train the model using event sequences
+    def train(self, sequences):
+        for sequence in sequences:
+            for i in range(len(sequence) - 1):
+                current_event = sequence[i]
+                next_event = sequence[i + 1]
+
+                self.transitions[current_event][next_event] += 1
+
+    # Calculate transition probabilities
+    def get_probabilities(self, current_event):
+
+        if current_event not in self.transitions:
+            return {}
+
+        total = sum(self.transitions[current_event].values())
+
+        probabilities = {}
+
+        for event, count in self.transitions[current_event].items():
+            probabilities[event] = count / total
+
+        return probabilities
+
+    # Predict the next event
+    def predict_next(self, current_event):
+
+        probabilities = self.get_probabilities(current_event)
+
+        if not probabilities:
+            return "Unknown event"
+
+        return max(probabilities, key=probabilities.get)
+
+    # Generate a sequence of future events
+    def generate_sequence(self, start_event, length):
+
+        sequence = [start_event]
+        current_event = start_event
+
+        for _ in range(length - 1):
+
+            probabilities = self.get_probabilities(current_event)
+
+            if not probabilities:
+                break
+
+            events = list(probabilities.keys())
+            weights = list(probabilities.values())
+
+            next_event = random.choices(
+                events, weights=weights
+            )[0]
+
+            sequence.append(next_event)
+            current_event = next_event
+
+        return sequence
+
+
+# Historical event sequences
+training_data = [
+    ["A", "B", "C", "A", "B"],
+    ["A", "B", "A", "C"],
+    ["B", "C", "A", "B"],
+    ["A", "C", "B", "C"]
+]
+
+# Create and train the Markov Chain model
+model = MarkovChain()
+model.train(training_data)
+
+# Predict the next event
+current_event = "A"
+
+print("Current Event:", current_event)
+
+print("\nTransition Probabilities:")
+print(model.get_probabilities(current_event))
+
+print("\nPredicted Next Event:")
+print(model.predict_next(current_event))
+
+# Generate future events
+print("\nGenerated Event Sequence:")
+print(model.generate_sequence("A", 10))
