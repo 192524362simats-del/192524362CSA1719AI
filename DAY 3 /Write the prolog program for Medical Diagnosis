@@ -1,0 +1,52 @@
+% Medical Diagnosis System in Prolog
+
+% Disease and Symptoms
+
+disease(flu) :-
+    symptom(fever),
+    symptom(cough),
+    symptom(body_pain).
+
+disease(common_cold) :-
+    symptom(sneezing),
+    symptom(runny_nose),
+    symptom(cough).
+
+disease(malaria) :-
+    symptom(fever),
+    symptom(chills),
+    symptom(sweating).
+
+disease(typhoid) :-
+    symptom(fever),
+    symptom(headache),
+    symptom(stomach_pain).
+
+disease(covid19) :-
+    symptom(fever),
+    symptom(cough),
+    symptom(loss_of_taste).
+
+disease(dengue) :-
+    symptom(fever),
+    symptom(headache),
+    symptom(joint_pain),
+    symptom(skin_rash).
+
+% Diagnosis Rule
+
+diagnose :-
+    disease(Disease),
+    write('Possible Disease: '),
+    write(Disease),
+    nl.
+
+diagnose :-
+    write('No matching disease found.'),
+    nl.
+
+% User Symptoms
+
+symptom(fever).
+symptom(cough).
+symptom(body_pain).
