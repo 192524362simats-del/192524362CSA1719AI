@@ -1,0 +1,179 @@
+import numpy as np
+
+# XOR Dataset
+X = np.array([
+    [0, 0],
+    [0, 1],
+    [1, 0],
+    [1, 1]
+])
+
+y = np.array([[0], [1], [1], [0]])
+
+# Neural Network Architecture
+INPUT = 2
+HIDDEN = 4
+OUTPUT = 1
+
+# Genetic Algorithm Parameters
+POPULATION_SIZE = 100
+GENERATIONS = 2000
+MUTATION_RATE = 0.1
+MUTATION_STRENGTH = 0.5
+ELITE_SIZE = 5
+
+# Total number of weights and biases
+GENE_SIZE = (
+    INPUT * HIDDEN + HIDDEN +
+    HIDDEN * OUTPUT + OUTPUT
+)
+
+# Sigmoid Activation Function
+def sigmoid(x):
+    return 1 / (1 + np.exp(-np.clip(x, -500, 500)))
+
+# Neural Network Prediction
+def predict(chromosome, X):
+
+    idx = 0
+
+    # Input to Hidden Layer
+    W1 = chromosome[idx:idx + INPUT * HIDDEN]
+    W1 = W1.reshape(INPUT, HIDDEN)
+    idx += INPUT * HIDDEN
+
+    b1 = chromosome[idx:idx + HIDDEN]
+    idx += HIDDEN
+
+    # Hidden to Output Layer
+    W2 = chromosome[idx:idx + HIDDEN * OUTPUT]
+    W2 = W2.reshape(HIDDEN, OUTPUT)
+    idx += HIDDEN * OUTPUT
+
+    b2 = chromosome[idx:idx + OUTPUT]
+
+    hidden = sigmoid(np.dot(X, W1) + b1)
+
+    output = sigmoid(np.dot(hidden, W2) + b2)
+
+    return output
+
+# Fitness Function
+def fitness(chromosome):
+
+    predictions = predict(chromosome, X)
+
+    error = np.mean((y - predictions) ** 2)
+
+    return 1 / (error + 1e-8)
+
+# Initialize Population
+population = np.random.uniform(
+    -2, 2,
+    (POPULATION_SIZE, GENE_SIZE)
+)
+
+# Tournament Selection
+def selection(population, fitness_values):
+
+    indices = np.random.choice(
+        len(population), 5, replace=False
+    )
+
+    best = indices[
+        np.argmax(fitness_values[indices])
+    ]
+
+    return population[best].copy()
+
+# Crossover
+def crossover(parent1, parent2):
+
+    point = np.random.randint(1, GENE_SIZE)
+
+    child = np.concatenate((
+        parent1[:point],
+        parent2[point:]
+    ))
+
+    return child
+
+# Mutation
+def mutation(chromosome):
+
+    for i in range(GENE_SIZE):
+
+        if np.random.rand() < MUTATION_RATE:
+
+            chromosome[i] += np.random.normal(
+                0, MUTATION_STRENGTH
+            )
+
+    return chromosome
+
+# Genetic Algorithm
+best_solution = None
+
+for generation in range(GENERATIONS):
+
+    fitness_values = np.array([
+        fitness(individual)
+        for individual in population
+    ])
+
+    # Sort population by fitness
+    sorted_indices = np.argsort(
+        fitness_values
+    )[::-1]
+
+    # Preserve Elite Individuals
+    new_population = [
+        population[i].copy()
+        for i in sorted_indices[:ELITE_SIZE]
+    ]
+
+    # Generate New Population
+    while len(new_population) < POPULATION_SIZE:
+
+        parent1 = selection(
+            population, fitness_values
+        )
+
+        parent2 = selection(
+            population, fitness_values
+        )
+
+        child = crossover(parent1, parent2)
+
+        child = mutation(child)
+
+        new_population.append(child)
+
+    population = np.array(new_population)
+
+    best_solution = population[0]
+
+    best_fitness = max(fitness_values)
+
+    if generation % 100 == 0:
+
+        print(
+            f"Generation: {generation}, "
+            f"Best Fitness: {best_fitness:.4f}"
+        )
+
+# Final Results
+print("\nFinal XOR Predictions:")
+
+predictions = predict(best_solution, X)
+
+for i in range(len(X)):
+
+    print(
+        f"Input: {X[i]} "
+        f"Expected: {y[i][0]} "
+        f"Predicted: {predictions[i][0]:.4f} "
+        f"Output: {int(predictions[i][0] >= 0.5)}"
+    )
+
+print("\nGenetic Algorithm Completed!")
