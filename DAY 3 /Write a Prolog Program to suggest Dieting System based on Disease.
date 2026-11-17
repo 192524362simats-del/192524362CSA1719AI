@@ -1,0 +1,67 @@
+% Diet Recommendation System Based on Disease
+
+% Diet recommendations for different diseases
+
+diet(diabetes, [
+    'Whole grains',
+    'Green vegetables',
+    'Fresh fruits in controlled portions',
+    'Low-fat milk',
+    'High-fibre foods'
+]).
+
+diet(hypertension, [
+    'Low-salt foods',
+    'Fresh vegetables',
+    'Fresh fruits',
+    'Whole grains',
+    'Low-fat dairy products'
+]).
+
+diet(obesity, [
+    'Green leafy vegetables',
+    'Fresh fruits',
+    'Boiled vegetables',
+    'Whole grains',
+    'Low-calorie foods'
+]).
+
+diet(heart_disease, [
+    'Oats',
+    'Fresh fruits',
+    'Green vegetables',
+    'Fish',
+    'Low-fat foods'
+]).
+
+diet(anemia, [
+    'Spinach',
+    'Dates',
+    'Beans',
+    'Iron-rich foods',
+    'Vitamin C-rich fruits'
+]).
+
+% Rule to suggest diet based on disease
+
+suggest_diet(Disease) :-
+    diet(Disease, Foods),
+    write('Recommended diet for '),
+    write(Disease),
+    write(' is:'), nl,
+    display_foods(Foods).
+
+% Display food items
+
+display_foods([]).
+
+display_foods([Head|Tail]) :-
+    write('- '),
+    write(Head), nl,
+    display_foods(Tail).
+
+% If disease is not found
+
+suggest_diet(Disease) :-
+    \+ diet(Disease, _),
+    write('Sorry! No diet recommendation available for this disease.').
