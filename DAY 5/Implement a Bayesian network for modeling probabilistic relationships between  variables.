@@ -1,0 +1,88 @@
+# Bayesian Network Implementation
+
+# Define prior probabilities
+P_B = 0.001
+P_E = 0.002
+
+# Conditional probabilities of Alarm
+P_A_BE = {
+    (True, True): 0.95,
+    (True, False): 0.94,
+    (False, True): 0.29,
+    (False, False): 0.001
+}
+
+# Conditional probabilities of John calling
+P_J_A = {
+    True: 0.90,
+    False: 0.05
+}
+
+# Conditional probabilities of Mary calling
+P_M_A = {
+    True: 0.70,
+    False: 0.01
+}
+
+
+# Calculate probability of alarm
+def probability_alarm(burglary, earthquake):
+    return P_A_BE[(burglary, earthquake)]
+
+
+# Calculate joint probability
+def joint_probability(B, E, A, J, M):
+
+    p_b = P_B if B else (1 - P_B)
+    p_e = P_E if E else (1 - P_E)
+
+    p_a = probability_alarm(B, E)
+    p_a = p_a if A else (1 - p_a)
+
+    p_j = P_J_A[A]
+    p_j = p_j if J else (1 - p_j)
+
+    p_m = P_M_A[A]
+    p_m = p_m if M else (1 - p_m)
+
+    return p_b * p_e * p_a * p_j * p_m
+
+
+# Calculate probability of burglary
+# given that John and Mary called
+
+def inference():
+
+    numerator = 0
+    denominator = 0
+
+    for B in [True, False]:
+        for E in [True, False]:
+            for A in [True, False]:
+
+                # Evidence: John and Mary called
+                p = joint_probability(
+                    B, E, A, True, True
+                )
+
+                denominator += p
+
+                if B:
+                    numerator += p
+
+    return numerator / denominator
+
+
+# Display results
+result = inference()
+
+print("Bayesian Network Implementation")
+print("--------------------------------")
+print("Evidence: John and Mary called")
+print("Probability of Burglary:",
+      round(result, 6))
+
+if result > 0.5:
+    print("Prediction: Burglary is likely.")
+else:
+    print("Prediction: Burglary is unlikely.")
