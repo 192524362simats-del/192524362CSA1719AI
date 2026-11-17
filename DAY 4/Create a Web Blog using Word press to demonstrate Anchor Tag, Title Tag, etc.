@@ -1,0 +1,71 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Title Tag -->
+    <title>My Educational Web Blog</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>My Educational Web Blog</h1>
+        <p>Learn HTML and Web Development</p>
+    </header>
+
+    <!-- Navigation Menu using Anchor Tags -->
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#html">HTML Tags</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home">
+        <h2>Welcome to My Blog</h2>
+        <p>
+            Welcome to my educational blog.
+            This website demonstrates different HTML tags
+            used in web development.
+        </p>
+
+        <img src="https://via.placeholder.com/600x250"
+             alt="Web Development Image">
+    </section>
+
+    <hr>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2>About Us</h2>
+
+        <p>
+            HTML stands for
+            <strong>HyperText Markup Language</strong>.
+            It is used to create web pages.
+        </p>
+
+        <p>
+            HTML provides the structure of a webpage,
+            while CSS provides styling.
+        </p>
+    </section>
+
+    <hr>
+
+    <!-- HTML Tags Demonstration -->
+    <section id="html">
+        <h2>HTML Tags Demonstration</h2>
+
+        <h3>1. Heading Tags</h3>
+        <h1>Heading 1</h1>
+        <h2>Heading 2</h2>
+        <h3>Heading 3</h3>
+
+        <h3>2. Paragraph
