@@ -1,0 +1,88 @@
+import heapq
+
+def manhattan_distance(state, goal):
+    distance = 0
+
+    for i in range(9):
+        if state[i] != 0:
+            x1, y1 = divmod(i, 3)
+            x2, y2 = divmod(goal.index(state[i]), 3)
+            distance += abs(x1 - x2) + abs(y1 - y2)
+
+    return distance
+
+
+def get_neighbors(state):
+    neighbors = []
+    zero = state.index(0)
+    row, col = divmod(zero, 3)
+
+    moves = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+
+    for dr, dc in moves:
+        r, c = row + dr, col + dc
+
+        if 0 <= r < 3 and 0 <= c < 3:
+            new_pos = r * 3 + c
+            new_state = list(state)
+
+            new_state[zero], new_state[new_pos] = (
+                new_state[new_pos], new_state[zero]
+            )
+
+            neighbors.append(tuple(new_state))
+
+    return neighbors
+
+
+def solve_8_puzzle(start, goal):
+    priority_queue = []
+    heapq.heappush(priority_queue,
+                   (manhattan_distance(start, goal), 0, start, [start]))
+
+    visited = set()
+
+    while priority_queue:
+        f, g, state, path = heapq.heappop(priority_queue)
+
+        if state == goal:
+            print("Solution Found!")
+            print("Number of Moves:", g)
+
+            for step in path:
+                for i in range(0, 9, 3):
+                    print(step[i:i+3])
+                print()
+
+            return
+
+        if state in visited:
+            continue
+
+        visited.add(state)
+
+        for neighbor in get_neighbors(state):
+            if neighbor not in visited:
+                new_g = g + 1
+                new_h = manhattan_distance(neighbor, goal)
+
+                heapq.heappush(
+                    priority_queue,
+                    (new_g + new_h, new_g, neighbor,
+                     path + [neighbor])
+                )
+
+    print("No solution exists!")
+
+
+# Initial State
+start = (1, 2, 3,
+         4, 0, 6,
+         7, 5, 8)
+
+# Goal State
+goal = (1, 2, 3,
+        4, 5, 6,
+        7, 8, 0)
+
+solve_8_puzzle(start, goal)
