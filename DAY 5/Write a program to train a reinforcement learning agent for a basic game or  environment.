@@ -1,0 +1,75 @@
+import gymnasium as gym
+import numpy as np
+
+# Create FrozenLake environment
+env = gym.make("FrozenLake-v1", is_slippery=False)
+
+# Initialize Q-table
+q_table = np.zeros((env.observation_space.n,
+                    env.action_space.n))
+
+# Hyperparameters
+learning_rate = 0.8
+discount_factor = 0.95
+epsilon = 1.0
+epsilon_decay = 0.995
+min_epsilon = 0.01
+episodes = 5000
+
+# Train the agent
+for episode in range(episodes):
+
+    state, info = env.reset()
+    done = False
+
+    while not done:
+
+        # Choose action using epsilon-greedy policy
+        if np.random.random() < epsilon:
+            action = env.action_space.sample()
+        else:
+            action = np.argmax(q_table[state])
+
+        # Perform action
+        next_state, reward, terminated, truncated, info = \
+            env.step(action)
+
+        done = terminated or truncated
+
+        # Update Q-table
+        q_table[state, action] += learning_rate * (
+            reward + discount_factor *
+            np.max(q_table[next_state]) * (not done)
+            - q_table[state, action]
+        )
+
+        state = next_state
+
+    # Reduce exploration rate
+    epsilon = max(min_epsilon,
+                  epsilon * epsilon_decay)
+
+# Display trained Q-table
+print("Training Completed!")
+print("\nLearned Q-Table:")
+print(q_table)
+
+# Test the trained agent
+state, info = env.reset()
+done = False
+total_reward = 0
+
+while not done:
+
+    action = np.argmax(q_table[state])
+
+    state, reward, terminated, truncated, info = \
+        env.step(action)
+
+    done = terminated or truncated
+    total_reward += reward
+
+print("\nTesting Completed!")
+print("Total Reward:", total_reward)
+
+env.close()
