@@ -1,0 +1,83 @@
+import cv2
+import numpy as np
+from keras_facenet import FaceNet
+from mtcnn import MTCNN
+
+# Load pre-trained models
+embedder = FaceNet()
+detector = MTCNN()
+
+# Load known face image
+known_image = cv2.imread("known_person.jpg")
+known_image = cv2.cvtColor(known_image, cv2.COLOR_BGR2RGB)
+
+# Detect face
+faces = detector.detect_faces(known_image)
+
+if not faces:
+    print("No face detected in known image")
+    exit()
+
+# Extract face embedding
+x, y, w, h = faces[0]['box']
+x, y = max(0, x), max(0, y)
+
+face = known_image[y:y+h, x:x+w]
+face = cv2.resize(face, (160, 160))
+
+known_embedding = embedder.embeddings([face])[0]
+
+# Start webcam
+cap = cv2.VideoCapture(0)
+
+while True:
+    ret, frame = cap.read()
+
+    if not ret:
+        break
+
+    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    detected_faces = detector.detect_faces(rgb_frame)
+
+    for detected_face in detected_faces:
+        x, y, w, h = detected_face['box']
+        x, y = max(0, x), max(0, y)
+
+        face = rgb_frame[y:y+h, x:x+w]
+
+        if face.size == 0:
+            continue
+
+        face = cv2.resize(face, (160, 160))
+
+        embedding = embedder.embeddings([face])[0]
+
+        # Compare embeddings
+        distance = np.linalg.norm(
+            known_embedding - embedding
+        )
+
+        if distance < 0.9:
+            name = "Known Person"
+            color = (0, 255, 0)
+        else:
+            name = "Unknown Person"
+            color = (0, 0, 255)
+
+        cv2.rectangle(
+            frame, (x, y), (x+w, y+h), color, 2
+        )
+
+        cv2.putText(
+            frame, name, (x, y-10),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.8, color, 2
+        )
+
+    cv2.imshow("Face Recognition System", frame)
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
