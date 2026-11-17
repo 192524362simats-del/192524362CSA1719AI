@@ -1,0 +1,52 @@
+# Dimensionality Reduction using PCA
+
+# Import required libraries
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from sklearn.datasets import load_iris
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+
+# Load the Iris dataset
+iris = load_iris()
+X = iris.data
+
+# Display original dataset shape
+print("Original Dataset Shape:", X.shape)
+
+# Standardize the dataset
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Apply PCA
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(X_scaled)
+
+# Display reduced dataset
+print("\nReduced Dataset:")
+print(X_pca)
+
+# Display reduced dataset shape
+print("\nReduced Dataset Shape:", X_pca.shape)
+
+# Display explained variance
+print("\nExplained Variance Ratio:")
+print(pca.explained_variance_ratio_)
+
+print("\nTotal Explained Variance:")
+print(sum(pca.explained_variance_ratio_))
+
+# Visualize PCA results
+plt.figure(figsize=(8, 5))
+
+plt.scatter(X_pca[:, 0], X_pca[:, 1],
+            c=iris.target, cmap='viridis')
+
+plt.xlabel("Principal Component 1")
+plt.ylabel("Principal Component 2")
+plt.title("Dimensionality Reduction Using PCA")
+plt.colorbar(label="Target Class")
+
+plt.show()
