@@ -1,0 +1,39 @@
+% Planet Database
+
+% Facts
+planet(mercury, terrestrial, 0.39, 88).
+planet(venus, terrestrial, 0.72, 225).
+planet(earth, terrestrial, 1.00, 365).
+planet(mars, terrestrial, 1.52, 687).
+planet(jupiter, gas_giant, 5.20, 4333).
+planet(saturn, gas_giant, 9.58, 10759).
+planet(uranus, ice_giant, 19.20, 30687).
+planet(neptune, ice_giant, 30.05, 60190).
+
+% Rules
+
+% Find all terrestrial planets
+terrestrial_planet(X) :-
+    planet(X, terrestrial, _, _).
+
+% Find all gas giant planets
+gas_giant(X) :-
+    planet(X, gas_giant, _, _).
+
+% Find all ice giant planets
+ice_giant(X) :-
+    planet(X, ice_giant, _, _).
+
+% Find planets with orbital distance less than 1 AU
+near_sun(X) :-
+    planet(X, _, Distance, _),
+    Distance < 1.0.
+
+% Find planets with orbital period greater than 365 days
+long_orbit(X) :-
+    planet(X, _, _, Days),
+    Days > 365.
+
+% Find details of a particular planet
+planet_details(X, Type, Distance, Days) :-
+    planet(X, Type, Distance, Days).
