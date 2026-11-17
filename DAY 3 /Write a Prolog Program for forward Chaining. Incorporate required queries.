@@ -1,0 +1,59 @@
+% Facts
+fact(parent(john, mary)).
+fact(parent(mary, alice)).
+fact(parent(john, david)).
+fact(parent(david, peter)).
+
+% Rules
+rule(grandparent(X, Z), [parent(X, Y), parent(Y, Z)]).
+
+rule(ancestor(X, Y), [parent(X, Y)]).
+rule(ancestor(X, Z), [parent(X, Y), ancestor(Y, Z)]).
+
+% Check whether a goal is already known
+known(X) :-
+    fact(X).
+
+known(X) :-
+    derived(X).
+
+% Forward Chaining
+forward_chaining :-
+    rule(Head, Body),
+    check_body(Body),
+    \+ known(Head),
+    assertz(derived(Head)),
+    write('Derived: '),
+    write(Head),
+    nl,
+    fail.
+
+forward_chaining.
+
+% Check all conditions in the rule body
+check_body([]).
+
+check_body([H|T]) :-
+    known(H),
+    check_body(T).
+
+% Initialize derived facts
+:- dynamic derived/1.
+
+% Run inference repeatedly until no new facts are derived
+run :-
+    repeat,
+    (forward_chaining, !),
+    fail.
+
+run :-
+    write('Forward Chaining Completed'), nl.
+
+% Query derived facts
+show_facts :-
+    derived(X),
+    write(X),
+    nl,
+    fail.
+
+show_facts.
