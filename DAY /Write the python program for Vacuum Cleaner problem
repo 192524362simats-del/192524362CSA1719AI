@@ -1,0 +1,40 @@
+# Vacuum Cleaner Problem
+
+def vacuum_cleaner(location, room_A, room_B):
+
+    print("Initial State:")
+    print("Room A:", room_A)
+    print("Room B:", room_B)
+    print("Vacuum Cleaner Location:", location)
+
+    while room_A == "Dirty" or room_B == "Dirty":
+
+        if location == "A":
+            if room_A == "Dirty":
+                print("\nVacuum Cleaner is cleaning Room A")
+                room_A = "Clean"
+            else:
+                print("\nMoving from Room A to Room B")
+                location = "B"
+
+        elif location == "B":
+            if room_B == "Dirty":
+                print("\nVacuum Cleaner is cleaning Room B")
+                room_B = "Clean"
+            else:
+                print("\nMoving from Room B to Room A")
+                location = "A"
+
+    print("\nFinal State:")
+    print("Room A:", room_A)
+    print("Room B:", room_B)
+    print("Both rooms are clean!")
+
+
+# Initial Conditions
+location = "A"
+room_A = "Dirty"
+room_B = "Dirty"
+
+# Calling the function
+vacuum_cleaner(location, room_A, room_B)
